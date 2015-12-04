@@ -200,7 +200,7 @@ vated and unmanaged')
 
   # autoload postmaps
   $postfix_postmaps = hiera_hash('postfix::postmaps', {})
-  create_resources(::Postfix::Postmap, $postfix_postmaps)
+  #create_resources(::Postfix::Postmap, $postfix_postmaps)
 
 }
 # vi:syntax=puppet:filetype=puppet:ts=4:et:nowrap:
