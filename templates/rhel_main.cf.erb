@@ -97,6 +97,28 @@ mail_owner = postfix
 #
 #myorigin = $myhostname
 #myorigin = $mydomain
+<% unless @myorigin.nil? -%>
+myorigin = <%= @myorigin %>
+<% end -%>
+
+# The hostname to send in the SMTP HELO or EHLO command.
+# The default value is the machine hostname. Specify a hostname or
+# [ip.add.re.ss].
+#
+# This information can be specified in the main.cf file for all SMTP
+# clients, or it can be specified in the master.cf file for a
+# specific client, for example:
+#
+#smtp_helo_name = $myhostname
+<% unless @smtp_helo_name.nil? -%>
+smtp_helo_name = <%= @smtp_helo_name %>
+<% end -%>
+<% unless @smtp_bind_address.nil? or @smtp_bind_address.empty? -%>
+
+# An optional numerical network address that the Postfix SMTP
+# # client should bind to when making an IPv4 connection. 
+smtp_bind_address = <%= @smtp_bind_address %>
+<% end -%>
 
 # RECEIVING MAIL
 
@@ -303,7 +325,11 @@ mynetworks = <%= @mynetworks.join(', ') %>
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
+<% unless @relay_domains.nil? -%>
+relay_domains = <%= @relay_domains %>
+<% else -%>
 #relay_domains = $mydestination
+<% end -%>
 
 # INTERNET OR INTRANET
 
@@ -688,6 +714,14 @@ sample_directory = /usr/share/doc/postfix-2.6.6/samples
 # readme_directory: The location of the Postfix README files.
 #
 readme_directory = /usr/share/doc/postfix-2.6.6/README_FILES
+
+# OTHER OPTIONS
+#
+# Additional options and settings.
+#
+
+# Disable the SMTP VRFY command. This stops some techniques used to harvest email addresses. 
+disable_vrfy_command = yes
 <% unless @smtpd_client_restrictions.empty? -%>
 
 # smtpd_client_restrictions: Optional restrictions that the Postfix SMTP

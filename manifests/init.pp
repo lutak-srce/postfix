@@ -57,8 +57,20 @@
 #   Defines list of interfaces postfix will bind to.
 #
 # [*inet_protocols*]
-#   Type: string, default: 'ipv4'
-#   Defines the protocols postfix will support
+#   Type: string, default: ['all']
+#   Defines INET protocls (ipv4, ipv6 or all)
+#
+# [*myorigin*]
+#   Type: string, default: undef
+#   Specifies the domain that appears in mail that is posted on this machine.
+#
+# [*smtp_helo_name*]
+#   Type: string, default: undef
+#   Specifies the hostname to send in HELO or EHLO commands.
+#
+# [*smtp_bind_address*]
+#   Type: string, default: undef
+#   Specifies the bind address for sending emails from.
 #
 # [*mydestination*]
 #   Type: array, default: [ '$myhostname', 'localhost.$mydomain', 'localhost' ]
@@ -91,6 +103,10 @@
 #   Type: string, default: ''
 #   Sets relayhost for delivering messages.
 #
+# [*relay_domains*]
+#   Type: string, default: ''
+#   Restricts what destinations this system will relay emails to.
+#
 # [*my_class*]
 #   Type: string, default: undef
 #   Name of a custom class to autoload to manage module's customizations
@@ -112,7 +128,10 @@ class postfix (
   $file_maincf                  = $::postfix::params::file_maincf,
   $template_maincf              = $::postfix::params::template_maincf,
   $interfaces                   = [ 'localhost' ],
-  $inet_protocols               = 'all',
+  $inet_protocols               = 'ipv4',
+  $myorigin                     = undef,
+  $smtp_helo_name               = undef,
+  $smtp_bind_address            = undef,
   $mydestination                = [ '$myhostname', 'localhost.$mydomain', 'localhost' ],
   $mynetworks                   = [],
   $recipient_canonical_maps     = undef,
@@ -120,6 +139,7 @@ class postfix (
   $smtpd_recipient_restrictions = [],
   $smtpd_banner                 = '$myhostname ESMTP $mail_name',
   $relayhost                    = 'UNSET',
+  $relay_domains                = undef,
   $my_class                     = undef,
   $noops                        = undef,
   ) inherits postfix::params {
@@ -159,10 +179,8 @@ vated and unmanaged')
     $file_ensure = present
   } else {
     $package_ensure = 'absent'
-    $backup_service_enable = undef
-    $backup_service_ensure = stopped
-    $archive_service_enable = undef
-    $archive_service_ensure = stopped
+    $service_enable = undef
+    $service_ensure = stopped
     $file_ensure    = absent
   }
 
@@ -200,7 +218,7 @@ vated and unmanaged')
 
   # autoload postmaps
   $postfix_postmaps = hiera_hash('postfix::postmaps', {})
-  #create_resources(::Postfix::Postmap, $postfix_postmaps)
+  create_resources(::postfix::postmap, $postfix_postmaps)
 
 }
 # vi:syntax=puppet:filetype=puppet:ts=4:et:nowrap:
