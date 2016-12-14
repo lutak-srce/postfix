@@ -129,6 +129,7 @@ class postfix (
   $template_maincf              = $::postfix::params::template_maincf,
   $interfaces                   = [ 'localhost' ],
   $alias_maps                   = [ 'hash:/etc/aliases' ],
+  $smtp_generic_maps            = [ ],
   $inet_protocols               = 'ipv4',
   $myorigin                     = undef,
   $smtp_helo_name               = undef,

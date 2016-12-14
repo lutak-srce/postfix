@@ -422,7 +422,7 @@ relayhost = <%= @relayhost %>
 # "postfix reload" to eliminate the delay.
 #
 #alias_maps = dbm:/etc/aliases
-alias_maps = hash:/etc/aliases
+alias_maps = <%= @alias_maps.join(', ') %>
 #alias_maps = hash:/etc/aliases, nis:mail.aliases
 #alias_maps = netinfo:/aliases
 
@@ -737,4 +737,7 @@ smtpd_client_restrictions = <%= @smtpd_client_restrictions.join(', ') %>
 # "Delayed evaluation of SMTP access restriction lists" for a discussion of 
 # evaluation context and time. 
 smtpd_recipient_restrictions = <%= @smtpd_recipient_restrictions.join(', ') %>
+<% end -%>
+<% unless @smtp_generic_maps.empty? -%>
+smtp_generic_maps = <%= @smtp_generic_maps.join(', ') %>
 <% end -%>
