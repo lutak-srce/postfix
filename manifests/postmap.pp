@@ -7,24 +7,22 @@ define postfix::postmap (
   $destdir = '/etc/postfix',
 ){
 
-  if ($content) {
-    file { "${destdir}/${title}":
-      ensure  => file,
-      owner   => root,
-      group   => root,
-      mode    => '0644',
-      content => template($content),
-      notify  => Exec["postfix_update_postmap_${title}"],
-    }
-  } else {
-    file { "${destdir}/${title}":
-      ensure  => file,
-      owner   => root,
-      group   => root,
-      mode    => '0644',
-      source  => $source,
-      notify  => Exec["postfix_update_postmap_${title}"],
-    }
+  if $content and $source {
+    fail('Only one of $content and $source can be specified.')
+  }
+
+  if $ensure == 'present' and ! $content and ! $source {
+    fail('One of $content and $source must be specified.')
+  }
+
+  file { "${destdir}/${title}":
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    source  => $source,
+    content => $content,
+    notify  => Exec["postfix_update_postmap_${title}"],
   }
 
   exec { "postfix_update_postmap_${title}":
