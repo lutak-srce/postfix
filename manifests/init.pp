@@ -147,14 +147,6 @@ class postfix (
   $noops                        = undef,
   ) inherits postfix::params {
 
-  ### Input parameters validation
-  validate_re($ensure, ['present','absent'], 'Valid values are: present, absent')
-  validate_string($package)
-  validate_string($version)
-  validate_string($service)
-  validate_re($status,  ['enabled','disabled','running','stopped','activated','deactivated','unmanaged'], 'Valid values are: enabled, disabled, running, stopped, activated, deacti
-vated and unmanaged')
-
   ### Internal variables (that map class parameters)
   if $ensure == 'present' {
     $package_ensure = $version ? {
