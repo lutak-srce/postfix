@@ -2,7 +2,6 @@
 # = Define: postfix::postmap
 #
 define postfix::postmap (
-  $ensure  = 'present',
   $source  = undef,
   $content = undef,
   $destdir = '/etc/postfix',
@@ -10,9 +9,7 @@ define postfix::postmap (
 
   if $content and $source {
     fail('Only one of $content and $source can be specified.')
-  }
-
-  if $ensure == 'present' and ! $content and ! $source {
+  } elsif ! $content and ! $source {
     fail('One of $content and $source must be specified.')
   }
 
@@ -23,7 +20,7 @@ define postfix::postmap (
   }
 
   file { "${destdir}/${title}":
-    ensure  => $ensure,
+    ensure  => file,
     owner   => root,
     group   => root,
     mode    => '0644',
