@@ -2,6 +2,7 @@
 # = Define: postfix::postmap
 #
 define postfix::postmap (
+  $ensure  = 'present',
   $source  = undef,
   $content = undef,
   $destdir = '/etc/postfix',
@@ -15,13 +16,19 @@ define postfix::postmap (
     fail('One of $content and $source must be specified.')
   }
 
+  if ( $content and $content =~ /^template\(["']?([a-zA-Z\/._-]+)["']?\)$/ ) {
+    $content_real = template($1)
+  } else {
+    $content_real = $content
+  }
+
   file { "${destdir}/${title}":
-    ensure  => file,
+    ensure  => $ensure,
     owner   => root,
     group   => root,
     mode    => '0644',
     source  => $source,
-    content => $content,
+    content => $content_real,
     notify  => Exec["postfix_update_postmap_${title}"],
   }
 
