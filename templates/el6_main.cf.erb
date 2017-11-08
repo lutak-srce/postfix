@@ -116,7 +116,7 @@ smtp_helo_name = <%= @smtp_helo_name %>
 <% unless @smtp_bind_address.nil? or @smtp_bind_address.empty? -%>
 
 # An optional numerical network address that the Postfix SMTP
-# # client should bind to when making an IPv4 connection. 
+# client should bind to when making an IPv4 connection. 
 smtp_bind_address = <%= @smtp_bind_address %>
 <% end -%>
 

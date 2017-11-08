@@ -52,6 +52,10 @@
 #   Type: string, default on $::osfamily basis
 #   Path to main.cf
 #
+# [*file_mastercf*]
+#   Type: string, default on $::osfamily basis
+#   Path to master.cf
+#
 # [*interfaces*]
 #   Type: array, default: ['localhost']
 #   Defines list of interfaces postfix will bind to.
@@ -126,7 +130,9 @@ class postfix (
   $file_owner                   = $::postfix::params::file_owner,
   $file_group                   = $::postfix::params::file_group,
   $file_maincf                  = $::postfix::params::file_maincf,
+  $file_mastercf                = $::postfix::params::file_mastercf,
   $template_maincf              = $::postfix::params::template_maincf,
+  $template_mastercf            = $::postfix::params::template_mastercf,
   $interfaces                   = [ 'localhost' ],
   $alias_maps                   = [ 'hash:/etc/aliases' ],
   $smtp_generic_maps            = [ ],
@@ -208,6 +214,12 @@ class postfix (
   file { '/etc/postfix/main.cf':
     path    => $file_maincf,
     content => template($template_maincf),
+    notify  => Service[$service],
+  }
+
+  file { '/etc/postfix/master.cf':
+    path    => $file_mastercf,
+    content => template($template_mastercf),
     notify  => Service[$service],
   }
 
