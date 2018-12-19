@@ -68,6 +68,14 @@
 #   Type: string, default: undef
 #   Specifies the domain that appears in mail that is posted on this machine.
 #
+# [*myhostname*]
+#   Type: string, default: undef
+#   Specifies the internet hostname of this mail system.
+#
+# [*mydomain*]
+#   Type: string, default: undef
+#   Specifies the internet domain name of this mail system.
+#
 # [*smtp_helo_name*]
 #   Type: string, default: undef
 #   Specifies the hostname to send in HELO or EHLO commands.
@@ -138,6 +146,8 @@ class postfix (
   $smtp_generic_maps            = [ ],
   $inet_protocols               = 'ipv4',
   $myorigin                     = undef,
+  $myhostname                   = undef,
+  $mydomain                     = undef,
   $smtp_helo_name               = undef,
   $smtp_bind_address            = undef,
   $mydestination                = [ '$myhostname', 'localhost.$mydomain', 'localhost' ],
