@@ -7,15 +7,14 @@ describe 'postfix class' do
       pp = 'include postfix'
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true) do |r|
+      apply_manifest(pp, catch_failures: true) do |r|
         expect(r.stderr).not_to match(%r{error}i)
       end
-      apply_manifest(pp, :catch_failures => true) do |r|
+      apply_manifest(pp, catch_failures: true) do |r|
         expect(r.stderr).not_to eq(%r{error}i)
-   
-        #expect(r.exit_code).to be_zero
+
         # bug in 14.04: init script not detecting Postfix running
-        expect(r.exit_code).to be_zero unless (fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemmajrelease') == '14.04')
+        expect(r.exit_code).to be_zero unless fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemmajrelease') == '14.04'
       end
     end
 
