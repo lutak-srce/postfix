@@ -224,7 +224,7 @@ class postfix (
   }
 
   # autoload postmaps
-  $postfix_postmaps = hiera_hash('postfix::postmaps', {})
+  $postfix_postmaps = lookup('postfix::postmaps', {merge => hash})
   create_resources(::postfix::postmap, $postfix_postmaps)
 
 }
