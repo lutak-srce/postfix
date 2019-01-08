@@ -13,8 +13,8 @@ describe 'postfix class' do
       apply_manifest(pp, catch_failures: true) do |r|
         expect(r.stderr).not_to eq(%r{error}i)
 
-        # bug in 14.04: init script not detecting Postfix running
-        expect(r.exit_code).to be_zero unless fact('operatingsystem') == 'Ubuntu' && fact('operatingsystemmajrelease') == '14.04'
+        # init script not detecting Postfix running
+        expect(r.exit_code).to be_zero unless fact('operatingsystem') == 'CentOS' && fact('operatingsystemmajrelease') == '6'
       end
     end
 
