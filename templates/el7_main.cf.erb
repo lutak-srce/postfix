@@ -74,6 +74,9 @@ mail_owner = postfix
 #
 #myhostname = host.domain.tld
 #myhostname = virtual.domain.tld
+<% unless @myhostname.nil? -%>
+myhostname = <%= @myhostname %>
+<% end -%>
 
 # The mydomain parameter specifies the local internet domain name.
 # The default is to use $myhostname minus the first component.
@@ -81,6 +84,9 @@ mail_owner = postfix
 # parameters.
 #
 #mydomain = domain.tld
+<% unless @mydomain.nil? -%>
+mydomain = <%= @mydomain %>
+<% end -%>
 
 # SENDING MAIL
 # 
