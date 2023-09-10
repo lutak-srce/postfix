@@ -25,16 +25,16 @@ class postfix::params {
       $file_mastercf     = '/etc/postfix/master.cf'
       case $::operatingsystemrelease {
         default: {
-          $template_maincf   = 'postfix/el6_main.cf.erb'
-          $template_mastercf = 'postfix/el6_master.cf.erb'
+          $template_maincf   = 'postfix/main.cf.el6.erb'
+          $template_mastercf = 'postfix/master.cf.el6.erb'
         }
         /^7.*/: {
-          $template_maincf   = 'postfix/el7_main.cf.erb'
-          $template_mastercf = 'postfix/el7_master.cf.erb'
+          $template_maincf   = 'postfix/main.cf.el7.erb'
+          $template_mastercf = 'postfix/master.cf.el7.erb'
         }
         /^8.*/: {
-          $template_maincf   = 'postfix/el8_main.cf.erb'
-          $template_mastercf = 'postfix/el8_master.cf.erb'
+          $template_maincf   = 'postfix/main.cf.el8.erb'
+          $template_mastercf = 'postfix/master.cf.el8.erb'
         }
       }
     }
