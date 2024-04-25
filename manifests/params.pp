@@ -36,6 +36,10 @@ class postfix::params {
           $template_maincf   = 'postfix/main.cf.el8.erb'
           $template_mastercf = 'postfix/master.cf.el8.erb'
         }
+        /^9.*/: {
+          $template_maincf   = 'postfix/main.cf.el9.erb'
+          $template_mastercf = 'postfix/master.cf.el9.erb'
+        }
       }
     }
     /(Debian|debian)/: {
