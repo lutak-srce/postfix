@@ -16,14 +16,14 @@ class postfix::params {
   $my_class         = undef
 
   # install package depending on major version
-  case $::osfamily {
+  case $facts['os']['family'] {
     default: {}
     /(RedHat|redhat|amazon)/: {
       $package           = 'postfix'
       $service           = 'postfix'
       $file_maincf       = '/etc/postfix/main.cf'
       $file_mastercf     = '/etc/postfix/master.cf'
-      case $::operatingsystemrelease {
+      case $facts['os']['release']['full'] {
         default: {
           $template_maincf   = 'postfix/main.cf.el6.erb'
           $template_mastercf = 'postfix/master.cf.el6.erb'
