@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 config = '/etc/postfix/main.cf'
 
-describe 'preferred servers', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'preferred servers' do
   pp = <<-EOS
       class { '::postfix':
         relayhost     => 'sendgrid.net',
@@ -11,14 +11,14 @@ describe 'preferred servers', :unless => UNSUPPORTED_PLATFORMS.include?(fact('os
   EOS
 
   it 'applies cleanly' do
-    apply_manifest(pp, :catch_failures => true) do |r|
-      expect(r.stderr).not_to match(/error/i)
+    apply_manifest(pp, catch_failures: true) do |r|
+      expect(r.stderr).not_to match(%r{error}i)
     end
   end
 
-  describe file("#{config}") do
-    it { should be_file }
-    its(:content) { should match /relayhost = sedgrid.net/     }
-    its(:content) { should match /relay_domains = example.com/ }
+  describe file(config) do
+    it { is_expected.to be_file }
+    its(:content) { is_expected.to match %r{relayhost = sedgrid.net}     }
+    its(:content) { is_expected.to match %r{relay_domains = example.com} }
   end
 end
